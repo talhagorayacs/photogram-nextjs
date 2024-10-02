@@ -35,32 +35,31 @@ function VerificationPage() {
 
   const onSubmit = async (data) => {
     try {
-      setIsSubmitting(true);
-      const response = await axios.get(`/api/verify-code`, {
-        params: {
-          username: username,
-          code: data.code,
-        },
-      });
+        setIsSubmitting(true);
+        const response = await axios.post(`/api/verify-code`, {
+            username: username,
+            code: data.code,
+        });
 
-      toast({
-        title: 'Success',
-        description: response.data.message,
-      });
+        toast({
+            title: 'Success',
+            description: response.data.message,
+        });
 
-      router.replace('/sign-in');
+        router.replace('/sign-in');
     } catch (error) {
-      console.error('Error verifying in frontend', error);
+        console.error('Error verifying in frontend', error);
 
-      toast({
-        title: 'Failed',
-        description: error.response?.data.message || 'Something went wrong!',
-        variant: 'destructive',
-      });
+        toast({
+            title: 'Failed',
+            description: error.response?.data.message || 'Something went wrong!',
+            variant: 'destructive',
+        });
     } finally {
-      setIsSubmitting(false);
+        setIsSubmitting(false);
     }
-  };
+};
+
 
   return (
     <div className="h-screen bg-gradient-to-br from-blue-400 via-blue-600 to-blue-800 flex items-center justify-center">

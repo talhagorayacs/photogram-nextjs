@@ -5,6 +5,7 @@ export const userNameUnique = z.object({
 });
 
 export const signUpSchemaValidation = z.object({
+    username: z.string().min(1, "Username is required"),
     email: z
         .string()
         .regex(/^\S+@\S+\.\S+$/, "Enter a valid email"), // Corrected the regex pattern

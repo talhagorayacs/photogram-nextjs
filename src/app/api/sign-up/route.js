@@ -63,7 +63,8 @@ export async function POST(request) {
         }
 
         const emailResponse = await sendVerificationEmail(email, username, verificationCode); // Await the email response
-
+        console.log(emailResponse,"response from sign up resend email");
+        
         if (!emailResponse) {
             return Response.json(
                 {

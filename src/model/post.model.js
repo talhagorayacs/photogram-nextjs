@@ -1,30 +1,34 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const PostSchema = new Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-      },
-      caption: {
+    },
+    username: {
+        type: String, // Change this to String to store the username directly
+        required: true
+    },
+    caption: {
         type: String,
         required: false
-      },
-      photo: {
+    },
+    photo: {
         type: String, // URL or path to the photo
         required: true
-      },
-      likes: [{
+    },
+    likes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Like'
-      }],
-      comments: [{
+    }],
+    comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
-      }]
-    }, { timestamps: true });
+    }]
+}, { timestamps: true });
 
+// Check if the model already exists
+const PostModel = mongoose.models.Post || mongoose.model("Post", PostSchema);
 
-    const PostModel = (mongoose.model.Post) || (mongoose.model("Post" , PostSchema))
-
-    export default PostModel
+export default PostModel;

@@ -1,57 +1,55 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
-import dbConnect from "@/lib/dbconnect";
-import UserModel from "@/model/user.model";
+import { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
+import dbConnect from '@/lib/dbconnect';
+import UserModel from '@/model/user.model';
 
 export const authOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
-      id: "Credentials",
-
+      id: 'credentials',
+      name: 'Credentials',
       credentials: {
-        email: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
-
       async authorize(credentials) {
         await dbConnect();
         try {
           const user = await UserModel.findOne({
             $or: [
-              { username: credentials.email }, // Use credentials.email for username
-              { email: credentials.email },    // And credentials.email for email
+              { email: credentials.identifier },
+              { username: credentials.identifier },
             ],
           });
           if (!user) {
-            throw new Error("User not found with this username or email");
+            return null; // No user found
           }
-
           if (!user.isVerified) {
-            throw new Error("Please verify your email first");
+            throw new Error('Please verify your account before logging in');
           }
-
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
             user.password
           );
-
-          if (isPasswordCorrect) {
-            return user;
-          } else {
-            throw new Error("Password incorrect");
+          if (!isPasswordCorrect) {
+            return null; // Incorrect password
           }
-        } catch (error) {
-          throw new Error(error.message || "Authorization failed");
+          return user; // Successful login
+        } catch (err) {
+          console.error(err); // Log the error for debugging
+          return null; // In case of any error, return null
         }
-      },
+      }
+      ,
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token._id = user._id?.toString();
+        token._id = user._id?.toString(); // Convert ObjectId to string
         token.isVerified = user.isVerified;
+        token.isAcceptingMessages = user.isAcceptingMessages;
         token.username = user.username;
       }
       return token;
@@ -60,16 +58,17 @@ export const authOptions = {
       if (token) {
         session.user._id = token._id;
         session.user.isVerified = token.isVerified;
+        session.user.isAcceptingMessages = token.isAcceptingMessages;
         session.user.username = token.username;
       }
       return session;
     },
   },
-  pages: {
-    signIn: "sign-in",
-  },
   session: {
-    strategy: "jwt", // Fix typo: strategy instead of stratrgy
+    strategy: 'jwt',
   },
   secret: process.env.NEXT_SECRET_KEY,
+  pages: {
+    signIn: '/sign-in',
+  },
 };
