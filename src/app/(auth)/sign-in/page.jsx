@@ -13,12 +13,17 @@ import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 
+import { useEffect } from 'react';
+
+// ... other imports
+
 function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-  const { data: session } = useSession();
-  const user = session?.user;
+  const { data: session } = useSession(); // This will get updated after signIn
+  const userName = session?.user?.username; // Access username from session
+
   const form = useForm({
     resolver: zodResolver(signInSchemaValidation),
     defaultValues: {
@@ -48,16 +53,21 @@ function SignInPage() {
         variant: 'destructive',
       });
     }
-    if (result?.url) {
-      console.log("Successfully signed in, redirecting to:", result.url);
-      router.replace(`/dashboard/${user.username}`); // Update this line if necessary
+
+    // Here, you do not redirect yet. Wait for the session to update.
+  };
+
+  // Redirect after session updates
+  useEffect(() => {
+    if (userName) {
+      console.log("Successfully signed in, redirecting to dashboard for:", userName);
+      router.replace(`/dashboard/${userName}`); // Redirect to dashboard with username
       toast({
-        title: "Login Seccessful",
-        description: "Welcome sir",
-        // variant: 'destructive',
+        title: "Login Successful",
+        description: "Welcome, " + userName,
       });
     }
-  };
+  }, [userName, router, toast]); // Add userName as a dependency
 
   return (
     <div className="h-screen bg-gradient-to-br from-blue-400 via-blue-600 to-blue-800">
@@ -154,3 +164,4 @@ function SignInPage() {
 }
 
 export default SignInPage;
+

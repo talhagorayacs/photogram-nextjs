@@ -58,6 +58,10 @@ export async function POST(request) {
                 verifyCode: verificationCode,
                 isVerified: false,
                 codeExpiry: expiryDate,
+                profilePhoto:"hey",
+                description:"hjkm",
+                coverPhoto:"gbhjn"
+                
             });
             await newUser.save();
         }

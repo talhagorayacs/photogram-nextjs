@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/dbconnect";
 import { handleFileUpload } from "@/lib/uploadHandler";
 import PostModel from "@/model/post.model";
+import UserModel from "@/model/user.model";
 export async function POST(request) {
   const formData = await request.formData();
   const name = formData.get("username");
@@ -24,7 +25,10 @@ export async function POST(request) {
             likes: [],
             comments: [],
           });
-
+          await UserModel.findByIdAndUpdate(id, {
+            $push: { post: newPost } // Add the new post's ID to the user's post array
+        });
+        
           await newPost.save();
         } catch (error) {
           console.log(error);

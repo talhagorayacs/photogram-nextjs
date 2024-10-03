@@ -64,10 +64,11 @@ export const authOptions = {
       return session;
     },
   },
+  
   session: {
     strategy: 'jwt',
   },
-  secret: process.env.NEXT_SECRET_KEY,
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/sign-in',
   },

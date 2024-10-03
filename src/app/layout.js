@@ -3,6 +3,7 @@ import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/toaster";
 import Navbar from "./(components)/navbar/page";
+import { Providers } from "@/store/StoreAuthProvider";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -22,15 +23,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <Providers>
       <AuthProvider>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Navbar/>
+          {/* <Navbar/> */}
           {children}
           <Toaster />
         </body>
       </AuthProvider>
+      </Providers>
     </html>
   );
 }

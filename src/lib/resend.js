@@ -4,24 +4,28 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendVerificationEmail(
-    email,
-    username,
-    VerificationCode
+  email,
+  username,
+  VerificationCode
 ) {
   try {
     const { data, error } = await resend.emails.send({
       from: 'Acme <onboarding@resend.dev>',
       to: email,
       subject: 'Verification Code',
-      react: VerificationEmail({username,otp:VerificationCode})
+      react: VerificationEmail({ username, otp: VerificationCode })
     });
 
     if (error) {
-      return Response.json({ error }, { status: 500 });
+      console.error("Error sending email:", error); // Log the error
+      return new Response(JSON.stringify({ error }), { status: 500 });
     }
 
-    return Response.json(data);
+    console.log("Email sent successfully:", data); // Log success response
+    return new Response(JSON.stringify(data), { status: 200 });
   } catch (error) {
-    return Response.json({ error }, { status: 500 });
+    console.error("Unexpected error:", error); // Log any unexpected errors
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
+

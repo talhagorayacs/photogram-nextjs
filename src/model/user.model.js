@@ -44,6 +44,18 @@ const UserSchema = new Schema(
         codeExpiry: {  // Change this to Date
             type: Date,
         },
+        profilePhoto:{
+            type:String,
+            default:"https://images.pexels.com/photos/28607741/pexels-photo-28607741/free-photo-of-traditional-korean-architecture-in-idyllic-seoul-setting.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load"
+        },
+        description:{
+            type:String,
+            default:"I am default description"
+        },
+        coverPhoto:{
+            type:String,
+            default:"https://images.pexels.com/photos/28305233/pexels-photo-28305233/free-photo-of-a-beach-with-umbrellas-and-boats-in-the-distance.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load"
+        }
     },
     {
         timestamps: true,
