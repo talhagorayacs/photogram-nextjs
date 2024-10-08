@@ -26,7 +26,7 @@ export async function POST(request) {
             comments: [],
           });
           await UserModel.findByIdAndUpdate(id, {
-            $push: { post: newPost } // Add the new post's ID to the user's post array
+            $push: { posts: newPost } // Add the new post's ID to the user's post array
         });
         
           await newPost.save();

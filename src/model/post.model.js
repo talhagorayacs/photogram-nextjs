@@ -32,3 +32,4 @@ const PostSchema = new Schema({
 const PostModel = mongoose.models.Post || mongoose.model("Post", PostSchema);
 
 export default PostModel;
+
