@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import RingLoader from 'react-spinners/RingLoader';
 
 // Function to format the timestamp
 const formatTimestamp = (timestamp) => {
@@ -45,8 +46,9 @@ const Posts = () => {
   const fetchPosts = async () => {
     if (!hasMorePosts || isLoading) return;
 
-    setIsLoading(true);
+    
     try {
+      setIsLoading(true);
       const response = await fetch(`/api/posts?limit=${limit}&offset=${offset}`);
       const data = await response.json();
 
@@ -186,6 +188,15 @@ const Posts = () => {
   
   return (
     <div className="space-y-4">
+      <div>
+         {/* Loader */}
+      {isLoading && (
+        <div className="loading-overlay">
+          <RingLoader loading={isLoading} color="#36d7b7" size={150} />
+        </div>
+      )}
+      <div className={isLoading ? 'blurred-background' : ''}></div>
+      </div>
       {posts.map((post, index) => (
         <CardContainer key={`${post._id}-${index}`} className="inter-var perspective relative">
           <CardBody className="bg-gray-50 relative group/card dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[35rem] h-auto rounded-xl p-4 border">
@@ -269,7 +280,7 @@ const Posts = () => {
             <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg z-10 relative max-h-24 overflow-y-auto">
               {post.comments && post.comments.length > 0 ? (
                 post.comments.map((comment) => (
-                  <div key={comment._id} className="flex mt-1 flex-col w-full space-y-2 bg-gray-200 dark:bg-gray-700 p-2 rounded-lg">
+                  <div key={comment?._id} className="flex mt-1 flex-col w-full space-y-2 bg-gray-200 dark:bg-gray-700 p-2 rounded-lg">
                     <div className="flex space-x-3 items-start w-full relative">
                       <Image
                         src={comment?.userId?.profilePhoto}

@@ -76,3 +76,21 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.7); /* Semi-transparent overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.blurred-background {
+  filter: blur(5px); /* Adjust the blur value to your liking */
+  pointer-events: none; /* Disable interaction with the blurred content */
+}

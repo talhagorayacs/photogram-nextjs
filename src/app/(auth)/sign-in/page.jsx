@@ -61,7 +61,7 @@ function SignInPage() {
   useEffect(() => {
     if (userName) {
       console.log("Successfully signed in, redirecting to dashboard for:", userName);
-      router.replace(`/dashboard/${userName}`); // Redirect to dashboard with username
+      router.replace(`/`); // Redirect to dashboard with username
       toast({
         title: "Login Successful",
         description: "Welcome, " + userName,

@@ -1,11 +1,10 @@
 "use client";
 import Image from "next/image";
-import Dock from "@/app/Dock";
-
+import HeroParallaxDemo from '../app/hero/page'
 export default function Home() {
   return (
     <>
-     
+     <HeroParallaxDemo/>
 
     </>
   );

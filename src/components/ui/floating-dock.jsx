@@ -1,8 +1,20 @@
+import React, { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
-import { IconLayoutNavbarCollapse } from "@tabler/icons-react";
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import Link from "next/link";
-import { useRef, useState } from "react";
+import {
+  IconLayoutNavbarCollapse,
+  IconHome,
+  IconUser,
+  IconUpload,
+  IconLogout,
+  IconRobot,
+} from "@tabler/icons-react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 
 export const FloatingDock = ({ items = [], desktopClassName, mobileClassName }) => {
   return (
@@ -36,11 +48,11 @@ const FloatingDockMobile = ({ items = [], className }) => {
                   },
                 }}
                 transition={{ delay: (items.length - 1 - idx) * 0.05 }}>
-                <Link
-                  href={item.href}
+                <button
+                  onClick={item.onClick}
                   className="h-10 w-10 rounded-full bg-gray-50 dark:bg-neutral-900 flex items-center justify-center">
                   <div className="h-4 w-4">{item.icon}</div>
-                </Link>
+                </button>
               </motion.div>
             ))}
           </motion.div>
@@ -73,7 +85,7 @@ const FloatingDockDesktop = ({ items = [], className }) => {
   );
 };
 
-function IconContainer({ mouseX, title, icon, href }) {
+function IconContainer({ mouseX, title, icon, onClick }) {
   let ref = useRef(null);
 
   let distance = useTransform(mouseX, (val) => {
@@ -110,7 +122,7 @@ function IconContainer({ mouseX, title, icon, href }) {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <Link href={href}>
+    <button onClick={onClick}>
       <motion.div
         ref={ref}
         style={{ width, height }}
@@ -134,6 +146,6 @@ function IconContainer({ mouseX, title, icon, href }) {
           {icon}
         </motion.div>
       </motion.div>
-    </Link>
+    </button>
   );
 }
