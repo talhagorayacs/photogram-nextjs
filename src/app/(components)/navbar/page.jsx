@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/store/authSlice";
 import SearchBar from "./SearchBar";
-// import FloatingDock from "./Dock";
 
 function Navbar() {
   const { data: session } = useSession();
@@ -26,28 +25,28 @@ function Navbar() {
 
   // Search bar logic
   const [username, setUsername] = useState("");
-  const [userData, setUserData] = useState([]); // Store user data from the API
+  const [userData, setUserData] = useState([]); 
 
   const handleSearch = async (input) => {
-    setUsername(input); // Update username state
+    setUsername(input); 
     if (input) {
-      // Check if input has a value
+      
       try {
         const response = await fetch(`/api/users/searchuser?username=${input}`);
         const data = await response.json();
-        console.log(data); // Log the response data
+        console.log(data); 
         if (data.success) {
-          setUserData(data.usersData); // Store the user data in state
+          setUserData(data.usersData); 
         }
       } catch (error) {
-        console.error("Error fetching users:", error); // Handle any errors
+        console.error("Error fetching users:", error); 
       }
     } else {
-      setUserData([]); // Clear results if input is empty
+      setUserData([]); 
     }
   };
   if (!session) {
-    return null; // Do not render the dock if the user is not logged in
+    return null;
   }
   return (
     <>

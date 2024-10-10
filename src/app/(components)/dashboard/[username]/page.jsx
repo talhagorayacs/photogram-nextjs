@@ -39,14 +39,14 @@ const Profile = ({ params = {} }) => {
     console.log(userData, "this is data");
   }, [userData]);
 
-  // Corrected from `userData?.post` to `userData?.posts`
+  
   const cards = userData?.posts?.map((post) => ({
     title: post.caption,
     src: post.photo,
   }));
 
   if (!userData) {
-    return <div>Loading...</div>; // Replace with a spinner for better UX
+    return <div>Loading...</div>; 
   }
 
   return (
@@ -104,7 +104,7 @@ const Profile = ({ params = {} }) => {
           </div>
           <FollowButton
             username={username}
-            followerUserId={userData._id} // Add valid followerUserId
+            followerUserId={userData._id} 
           />
         </div>
       </div>

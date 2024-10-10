@@ -22,7 +22,7 @@ const LikeButton = ({ userId, postId, isLiked, onLikeToggle, likesCount }) => {
       console.log("liked post data", data);
 
       if (data.success) {
-        // Update the like state based on the API response
+        
         const newIsLiked = !data.message.includes("unliked");
         onLikeToggle(postId, newIsLiked); // Pass the updated like status
       } else {

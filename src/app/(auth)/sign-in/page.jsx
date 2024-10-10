@@ -1,73 +1,78 @@
-'use client';
+"use client";
 
-import { useToast } from '@/hooks/use-toast';
-import { signInSchemaValidation } from '@/Schema/signInSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
-import { Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { signIn } from 'next-auth/react';
-import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
+import { useToast } from "@/hooks/use-toast";
+import { signInSchemaValidation } from "@/Schema/signInSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 
-import { useEffect } from 'react';
-
-// ... other imports
+import { useEffect } from "react";
 
 function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-  const { data: session } = useSession(); // This will get updated after signIn
-  const userName = session?.user?.username; // Access username from session
+  const { data: session } = useSession();
+  const userName = session?.user?.username;
 
   const form = useForm({
     resolver: zodResolver(signInSchemaValidation),
     defaultValues: {
-      identifier: '',
-      password: '',
+      identifier: "",
+      password: "",
     },
   });
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
 
-    const result = await signIn('credentials', {
+    const result = await signIn("credentials", {
       redirect: false,
       identifier: data.identifier,
       password: data.password,
     });
 
-    console.log("Sign In Result:", result); // Debugging log
+    console.log("Sign In Result:", result);
 
     setIsSubmitting(false);
 
     if (result?.error) {
-      console.error("Sign in error:", result.error); // Log error for debugging
+      console.error("Sign in error:", result.error);
       toast({
         title: "Login Failed",
         description: "Incorrect username or password",
-        variant: 'destructive',
+        variant: "destructive",
       });
     }
-
-    // Here, you do not redirect yet. Wait for the session to update.
   };
 
-  // Redirect after session updates
   useEffect(() => {
     if (userName) {
-      console.log("Successfully signed in, redirecting to dashboard for:", userName);
-      router.replace(`/`); // Redirect to dashboard with username
+      console.log(
+        "Successfully signed in, redirecting to dashboard for:",
+        userName
+      );
+      router.replace(`/`);
       toast({
         title: "Login Successful",
         description: "Welcome, " + userName,
       });
     }
-  }, [userName, router, toast]); // Add userName as a dependency
+  }, [userName, router, toast]);
 
   return (
     <div className="h-screen bg-gradient-to-br from-blue-400 via-blue-600 to-blue-800">
@@ -81,12 +86,17 @@ function SignInPage() {
                 alt="Instagram logo"
               />
               <h1 className="mb-2 text-3xl font-bold">Sign In</h1>
-              <span className="text-gray-400">Welcome back! Please sign in to continue.</span>
+              <span className="text-gray-400">
+                Welcome back! Please sign in to continue.
+              </span>
             </div>
 
             {/* Form */}
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
                 {/* Username/Email Field */}
                 <FormField
                   control={form.control}
@@ -140,7 +150,7 @@ function SignInPage() {
                         Please Wait
                       </>
                     ) : (
-                      'Sign In'
+                      "Sign In"
                     )}
                   </Button>
                 </div>
@@ -150,8 +160,11 @@ function SignInPage() {
             {/* Sign Up Link */}
             <div className="text-center mt-4">
               <p>
-                Not a member yet?{' '}
-                <Link href="/sign-up" className="text-purple-500 hover:text-blue-800">
+                Not a member yet?{" "}
+                <Link
+                  href="/sign-up"
+                  className="text-purple-500 hover:text-blue-800"
+                >
                   Sign up
                 </Link>
               </p>
@@ -164,4 +177,3 @@ function SignInPage() {
 }
 
 export default SignInPage;
-

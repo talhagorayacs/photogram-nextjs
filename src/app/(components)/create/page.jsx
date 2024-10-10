@@ -45,7 +45,7 @@ const ImageComponent = () => {
         const blob = await response.blob();
         const imageUrl = URL.createObjectURL(blob);
         setImageSrc(imageUrl);
-        setImageBlob(blob); // Store the blob in state for sharing
+        setImageBlob(blob); 
       } else {
         const errorData = await response.text();
         console.error("Error:", errorData);
@@ -96,7 +96,7 @@ const ImageComponent = () => {
     } catch (error) {
       console.log("Error uploading file:", error);
     } finally {
-      setShareLoading(false); // Stop loading
+      setShareLoading(false); 
     }
   };
 
@@ -157,7 +157,7 @@ const ImageComponent = () => {
         <button
           onClick={handleShare}
           className="px-5 py-3 bg-blue-500 text-white rounded-lg transition duration-300 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-900"
-          disabled={!imageBlob || loading} // Disable button if no image is available or loading is in progress
+          disabled={!imageBlob || loading} 
         >
           {shareloading ? (
             <div className="flex items-center gap-2">

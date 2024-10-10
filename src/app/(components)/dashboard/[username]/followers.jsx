@@ -5,7 +5,7 @@ function FollowButton({ username, followerUserId, onFollowToggle }) {
 
   const [isFollowed, setIsFollowed] = useState(false);
   
-  // Move useSelector out of useEffect
+  
   const currentUser = useSelector((state) => state.auth.user);
 
   useEffect(() => {
@@ -31,13 +31,13 @@ function FollowButton({ username, followerUserId, onFollowToggle }) {
       console.log("Follow/unfollow action data", data);
 
       if (data.success) {
-        // Determine new follow status
+        
         const newIsFollowed = !data.message.includes("unfollowed");
 
-        // Update local state
+        
         setIsFollowed(newIsFollowed);
 
-        // Call the onFollowToggle function (if needed to update parent state)
+       
         if (onFollowToggle) {
           onFollowToggle(username, newIsFollowed);
         }

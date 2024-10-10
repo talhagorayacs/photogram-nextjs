@@ -15,13 +15,13 @@ const SearchBar = ({ onSearch, results }) => {
   ];
 
   const handleChange = (e) => {
-    onSearch(e.target.value); // Call the onSearch function passed as a prop
-    setShowResults(true); // Show results when user types
+    onSearch(e.target.value); 
+    setShowResults(true); 
   };
 
   const handleUserClick = (username) => {
-    setShowResults(false); // Hide results when a user clicks on one
-    router.push(`/dashboard/${username}`); // Redirect to the user's dashboard
+    setShowResults(false); 
+    router.push(`/dashboard/${username}`); 
   };
 
   return (
