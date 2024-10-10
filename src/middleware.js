@@ -37,11 +37,10 @@ export async function middleware(request) {
     }
   } else {
     if (
-      url.pathname.startsWith("/dashboard") ||
+      url.pathname.startsWith("/dashboard/:path*") ||
       url.pathname.startsWith("/posts") ||
       url.pathname.startsWith("/upload") ||
-      url.pathname === "/create" ||
-       url.pathname === "/"
+      url.pathname === "/create"
     ) {
       console.log("Redirecting to sign-in");
       return NextResponse.redirect(new URL("/sign-in", request.url));
